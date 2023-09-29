@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     defaultConfig {
@@ -17,9 +16,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    aaptOptions {
-        noCompress "tflite"
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -28,6 +24,9 @@ android {
         jvmTarget = '17'
     }
     namespace 'isomora.com.greendoctor'
+    androidResources {
+        noCompress 'tflite'
+    }
 }
 
 dependencies {
