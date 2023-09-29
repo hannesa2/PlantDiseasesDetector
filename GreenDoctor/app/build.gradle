@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 30
     defaultConfig {
         applicationId "isomora.com.greendoctor"
         minSdkVersion 19
-        targetSdkVersion 30
+        compileSdk 34
+        targetSdkVersion 34
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
