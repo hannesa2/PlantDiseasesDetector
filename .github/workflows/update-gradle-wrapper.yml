@@ -2,7 +2,7 @@ name: Update Gradle Wrapper
 
 on:
   schedule:
-    - cron: "15 6 * * WED"
+    - cron: "58 6 * * WED"
 
 jobs:
   update-gradle-wrapper:
@@ -14,5 +14,4 @@ jobs:
       - name: Update Gradle Wrapper
         uses: gradle-update/update-gradle-wrapper-action@v1.0.20
         with:
-          repo-token: ${{ secrets.GITHUBTOKEN }}
           set-distribution-checksum: false
