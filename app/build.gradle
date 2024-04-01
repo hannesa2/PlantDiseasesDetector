@@ -1,7 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+def keystorePropertiesFile = rootProject.file("signing/keystore.properties");
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
+    namespace 'isomora.com.greendoctor'
     defaultConfig {
         applicationId "isomora.com.greendoctor"
         minSdkVersion 26
@@ -26,14 +33,58 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    namespace 'isomora.com.greendoctor'
     androidResources {
         noCompress 'tflite'
+    }
+    signingConfigs {
+        debugCI {
+            storeFile file('../signing/debug.keystore')
+            storePassword "android"
+            keyPassword "android"
+            keyAlias "androiddebugkey"
+        }
+        release {
+            storeFile file('../signing/release.keystore')
+            storePassword keystoreProperties.getProperty('storePassword')
+            keyAlias keystoreProperties.getProperty('keyAlias')
+            keyPassword keystoreProperties.getProperty('keyPassword')
+        }
+    }
+    buildTypes {
+        debug {
+            if (System.getenv("CI") == "true") { // Github action
+                println "I run on Gitlab and use for debug the RELEASE signing"
+                signingConfig signingConfigs.release
+            }
+        }
+        release {
+            signingConfig signingConfigs.release
+            if (System.getenv("CI_SERVER")) { // gitlab
+                println "I run on Gitlab and use RELEASE signing"
+                signingConfig signingConfigs.release
+            } else if (System.getenv("CI") == "true") { // Github
+                println "I run on Github and use RELEASE signing"
+                signingConfig signingConfigs.release
+            } else if (file('../signing/release-key.keystore').exists()) {
+                if (System.getenv("KEYSTORE_PASS") == null || System.getenv("ALIAS_PASS") == null) {
+                    println "I run somewhere else and I use DEBUG signing because variables are not set !"
+                    signingConfig signingConfigs.debugCI
+                } else {
+                    println "I use RELEASE signing"
+                    signingConfig signingConfigs.release
+                }
+            } else {
+                println "I run somewhere else and I use debug signing"
+                signingConfig signingConfigs.debugCI
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 }
 
 dependencies {
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'org.tensorflow:tensorflow-lite:2.15.0'
