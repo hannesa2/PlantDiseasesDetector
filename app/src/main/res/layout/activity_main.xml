@@ -7,39 +7,39 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/mCameraButton"
+        android:id="@+id/cameraButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:text="@string/buttonTakePhoto"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mPhotoImageView"
+        app:layout_constraintBottom_toTopOf="@+id/photoImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/mGalleryButton"
+        android:id="@+id/galleryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="8dp"
         android:text="@string/buttonSelectPhoto"
-        app:layout_constraintBottom_toTopOf="@+id/mPhotoImageView"
-        app:layout_constraintEnd_toStartOf="@+id/mDetectButton"
+        app:layout_constraintBottom_toTopOf="@+id/photoImageView"
+        app:layout_constraintEnd_toStartOf="@+id/detectButton"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/mCameraButton"
+        app:layout_constraintStart_toEndOf="@+id/cameraButton"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/mPhotoImageView"
+        android:id="@+id/photoImageView"
         android:layout_width="350dp"
         android:layout_height="400dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/descriptionImage"
-        app:layout_constraintBottom_toTopOf="@+id/mDetectButton"
+        app:layout_constraintBottom_toTopOf="@+id/detectButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -47,18 +47,18 @@
         app:srcCompat="@android:color/darker_gray" />
 
     <Button
-        android:id="@+id/mDetectButton"
+        android:id="@+id/detectButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/buttonDiagnose"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mResultTextView"
+        app:layout_constraintBottom_toTopOf="@+id/resultTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/mResultTextView"
+        android:id="@+id/resultTextView"
         android:layout_width="0dp"
         android:layout_height="75dp"
         android:layout_marginStart="32dp"

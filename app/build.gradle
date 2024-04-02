@@ -90,7 +90,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'org.tensorflow:tensorflow-lite:2.15.0'
-    implementation 'com.github.hannesa2:githubAppUpdate:2.3'
+    implementation 'com.github.hannesa2:githubAppUpdate:2.3.1'
 }
 
 static def getGitOriginRemote() {
