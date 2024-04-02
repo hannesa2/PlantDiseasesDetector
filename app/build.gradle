@@ -33,7 +33,7 @@ android {
         jvmTarget = '17'
     }
     buildFeatures {
-        viewBinding = true
+        viewBinding true
     }
     androidResources {
         noCompress += "tflite"
