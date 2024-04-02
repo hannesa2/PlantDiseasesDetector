@@ -9,9 +9,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.os.Build
 import android.provider.MediaStore
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import isomora.com.greendoctor.databinding.ActivityMainBinding
@@ -32,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     @SuppressLint("SetTextI18n")
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -68,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == mCameraRequestCode) {
@@ -99,11 +97,10 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             Toast.makeText(this, "Unrecognized request code", Toast.LENGTH_LONG).show()
-
         }
     }
 
-    fun scaleImage(bitmap: Bitmap?): Bitmap {
+    private fun scaleImage(bitmap: Bitmap?): Bitmap {
         val orignalWidth = bitmap!!.width
         val originalHeight = bitmap.height
         val scaleWidth = mInputSize.toFloat() / orignalWidth
