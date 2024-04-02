@@ -3,13 +3,14 @@ package isomora.com.greendoctor
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import info.hannes.github.AppUpdateHelper
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        // requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -50,17 +51,20 @@ class MainActivity : AppCompatActivity() {
             binding.photoImageView.setImageBitmap(bitmap)
         }
 
-        binding.cameraButton.setOnClickListener {
+        findViewById<Button>(R.id.cameraButton).setOnClickListener {
+            Log.d("GreenDoctor", "cameraButton")
             val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(callCameraIntent, cameraRequestCode)
         }
 
-        binding.galleryButton.setOnClickListener {
+        findViewById<Button>(R.id.galleryButton).setOnClickListener {
+            Log.d("GreenDoctor", "galleryButton")
             val callGalleryIntent = Intent(Intent.ACTION_PICK)
             callGalleryIntent.type = "image/*"
             startActivityForResult(callGalleryIntent, galleryRequestCode)
         }
-        binding.detectButton.setOnClickListener {
+        findViewById<Button>(R.id.detectButton).setOnClickListener {
+            Log.d("GreenDoctor", "detectButton")
             val results = classifier.recognizeImage(bitmap).firstOrNull()
             binding.resultTextView.text = results?.title + "\n Confidence:" + results?.confidence
         }
@@ -75,12 +79,11 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == cameraRequestCode) {
-            //Considérons le cas de la caméra annulée
             if (resultCode == Activity.RESULT_OK && data != null) {
                 bitmap = data.extras!!.get("data") as Bitmap
                 bitmap = scaleImage(bitmap)
                 val toast = Toast.makeText(this, ("Image crop to: w= ${bitmap.width} h= ${bitmap.height}"), Toast.LENGTH_LONG)
-                toast.setGravity(Gravity.BOTTOM, 0, 20)
+                //toast.setGravity(Gravity.BOTTOM, 0, 20)
                 toast.show()
                 binding.photoImageView.setImageBitmap(bitmap)
                 binding.resultTextView.text = "Your photo image set now."
@@ -97,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
 
-                println("Success!!!")
+                Log.d("GreenDoctor", "Success!!!")
                 bitmap = scaleImage(bitmap)
                 binding.photoImageView.setImageBitmap(bitmap)
             }
