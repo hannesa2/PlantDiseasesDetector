@@ -12,6 +12,7 @@ import android.graphics.Matrix
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
+import info.hannes.github.AppUpdateHelper
 import isomora.com.greendoctor.databinding.ActivityMainBinding
 import java.io.IOException
 
@@ -63,6 +64,11 @@ class MainActivity : AppCompatActivity() {
             val results = mClassifier.recognizeImage(mBitmap).firstOrNull()
             binding.mResultTextView.text = results?.title + "\n Confidence:" + results?.confidence
         }
+
+        AppUpdateHelper.checkForNewVersion(
+            this,
+            gitRepoUrl = BuildConfig.GIT_REPOSITORY
+        )
     }
 
     @SuppressLint("SetTextI18n")
