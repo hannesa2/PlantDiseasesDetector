@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-def keystorePropertiesFile = rootProject.file("signing/keystore.properties");
+def keystorePropertiesFile = rootProject.file("signing/keystore.properties")
 def keystoreProperties = new Properties()
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
@@ -36,7 +36,7 @@ android {
         viewBinding = true
     }
     androidResources {
-        noCompress 'tflite'
+        noCompress += "tflite"
     }
     signingConfigs {
         debugCI {
