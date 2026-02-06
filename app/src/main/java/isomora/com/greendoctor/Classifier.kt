@@ -11,6 +11,7 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.util.*
 import kotlin.math.min
+import androidx.core.graphics.scale
 
 class Classifier(assetManager: AssetManager, modelPath: String, labelPath: String, inputSize: Int) {
     private var INTERPRETER: Interpreter
@@ -52,7 +53,7 @@ class Classifier(assetManager: AssetManager, modelPath: String, labelPath: Strin
     }
 
     fun recognizeImage(bitmap: Bitmap): List<Recognition> {
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false)
+        val scaledBitmap = bitmap.scale(INPUT_SIZE, INPUT_SIZE, false)
         val byteBuffer = convertBitmapToByteBuffer(scaledBitmap)
         val result = Array(1) { FloatArray(LABEL_LIST.size) }
         INTERPRETER.run(byteBuffer, result)
@@ -68,11 +69,11 @@ class Classifier(assetManager: AssetManager, modelPath: String, labelPath: Strin
 
         bitmap.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
         var pixel = 0
-        for (i in 0 until INPUT_SIZE) {
-            for (j in 0 until INPUT_SIZE) {
+        repeat((0 until INPUT_SIZE).count()) {
+            repeat((0 until INPUT_SIZE).count()) {
                 val `val` = intValues[pixel++]
 
-                byteBuffer.putFloat((((`val`.shr(16)  and 0xFF) - IMAGE_MEAN) / IMAGE_STD))
+                byteBuffer.putFloat((((`val`.shr(16) and 0xFF) - IMAGE_MEAN) / IMAGE_STD))
                 byteBuffer.putFloat((((`val`.shr(8) and 0xFF) - IMAGE_MEAN) / IMAGE_STD))
                 byteBuffer.putFloat((((`val` and 0xFF) - IMAGE_MEAN) / IMAGE_STD))
             }
@@ -95,8 +96,7 @@ class Classifier(assetManager: AssetManager, modelPath: String, labelPath: Strin
             val confidence = labelProbArray[0][i]
             if (confidence >= THRESHOLD) {
                 pq.add(
-                    Recognition("" + i,
-                    if (LABEL_LIST.size > i) LABEL_LIST[i] else "Unknown", confidence)
+                    Recognition("" + i,                        LABEL_LIST[i], confidence)
                 )
             }
         }
@@ -104,7 +104,7 @@ class Classifier(assetManager: AssetManager, modelPath: String, labelPath: Strin
 
         val recognitions = ArrayList<Recognition>()
         val recognitionsSize = min(pq.size, MAX_RESULTS)
-        for (i in 0 until recognitionsSize) {
+        repeat((0 until recognitionsSize).count()) {
             pq.poll()?.let { recognitions.add(it) }
         }
         return recognitions
