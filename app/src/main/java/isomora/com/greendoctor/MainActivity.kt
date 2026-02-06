@@ -1,7 +1,6 @@
 package isomora.com.greendoctor
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,10 +8,10 @@ import android.graphics.Matrix
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.Gravity
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.scale
 import info.hannes.github.AppUpdateHelper
 import isomora.com.greendoctor.databinding.ActivityMainBinding
 import java.io.IOException
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         resources.assets.open(samplePath).use {
             bitmap = BitmapFactory.decodeStream(it)
-            bitmap = Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true)
+            bitmap = bitmap.scale(inputSize, inputSize)
             binding.photoImageView.setImageBitmap(bitmap)
         }
 
@@ -79,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == cameraRequestCode) {
-            if (resultCode == Activity.RESULT_OK && data != null) {
+            if (resultCode == RESULT_OK && data != null) {
                 bitmap = data.extras!!.get("data") as Bitmap
                 bitmap = scaleImage(bitmap)
                 val toast = Toast.makeText(this, ("Image crop to: w= ${bitmap.width} h= ${bitmap.height}"), Toast.LENGTH_LONG)
