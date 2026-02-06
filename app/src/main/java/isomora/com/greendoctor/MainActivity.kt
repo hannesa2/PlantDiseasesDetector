@@ -60,8 +60,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 if (imageBitmap != null) {
                     bitmap = scaleImage(imageBitmap)
-                    val toast = Toast.makeText(this, ("Image crop to: w= ${bitmap.width} h= ${bitmap.height}"), Toast.LENGTH_LONG)
-                    toast.show()
+                    Toast.makeText(this, "Image crop to: w= ${bitmap.width} h= ${bitmap.height}", Toast.LENGTH_LONG)
+                        .show()
                     binding.photoImageView.setImageBitmap(bitmap)
                     binding.resultTextView.text = "Your photo image set now."
                 }
