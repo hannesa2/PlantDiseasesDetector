@@ -1,5 +1,4 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+apply plugin: "com.android.application"
 
 def keystorePropertiesFile = rootProject.file("signing/keystore.properties")
 def keystoreProperties = new Properties()
@@ -8,48 +7,45 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace 'isomora.com.greendoctor'
+    namespace "isomora.com.greendoctor"
     defaultConfig {
         applicationId "isomora.com.greendoctor"
         minSdkVersion 26
-        compileSdk 34
-        targetSdkVersion 34
+        compileSdk 36
         versionCode 1
         versionName "1.1"
 
-        buildConfigField "String", 'GIT_REPOSITORY', "\"" + getGitOriginRemote() + "\""
+        buildConfigField "String", "GIT_REPOSITORY", "\"" + getGitOriginRemote() + "\""
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '17'
-    }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
     androidResources {
         noCompress += "tflite"
     }
     signingConfigs {
         debugCI {
-            storeFile file('../signing/debug.keystore')
+            storeFile file("../signing/debug.keystore")
             storePassword "android"
             keyPassword "android"
             keyAlias "androiddebugkey"
         }
         release {
-            storeFile file('../signing/release.keystore')
-            storePassword keystoreProperties.getProperty('storePassword')
-            keyAlias keystoreProperties.getProperty('keyAlias')
-            keyPassword keystoreProperties.getProperty('keyPassword')
+            storeFile file("../signing/release.keystore")
+            storePassword keystoreProperties.getProperty("storePassword")
+            keyAlias keystoreProperties.getProperty("keyAlias")
+            keyPassword keystoreProperties.getProperty("keyPassword")
         }
     }
     buildTypes {
@@ -67,7 +63,7 @@ android {
             } else if (System.getenv("CI") == "true") { // Github
                 println "I run on Github and use RELEASE signing"
                 signingConfig signingConfigs.release
-            } else if (file('../signing/release-key.keystore').exists()) {
+            } else if (file("../signing/release-key.keystore").exists()) {
                 if (System.getenv("KEYSTORE_PASS") == null || System.getenv("ALIAS_PASS") == null) {
                     println "I run somewhere else and I use DEBUG signing because variables are not set !"
                     signingConfig signingConfigs.debugCI
@@ -80,17 +76,17 @@ android {
                 signingConfig signingConfigs.debugCI
             }
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
-    implementation 'org.tensorflow:tensorflow-lite:2.17.0'
-    implementation 'com.github.hannesa2:githubAppUpdate:2.3.1'
+    implementation "androidx.appcompat:appcompat:1.7.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.2.1"
+    implementation "org.tensorflow:tensorflow-lite:2.17.0"
+    implementation "com.github.hannesa2:githubAppUpdate:2.3.1"
 }
 
 static def getGitOriginRemote() {
