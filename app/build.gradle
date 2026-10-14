@@ -88,8 +88,8 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:2.2.2"
     implementation "org.tensorflow:tensorflow-lite:2.16.1"
     implementation "com.github.hannesa2:githubAppUpdate:2.4"
-    implementation "org.tensorflow:tensorflow-lite-support-api:0.4.4"
-    implementation "org.tensorflow:tensorflow-lite-metadata:0.4.4"
+    implementation "org.tensorflow:tensorflow-lite-support-api:0.5.0"
+    implementation "org.tensorflow:tensorflow-lite-metadata:0.5.0"
 }
 
 static def getGitOriginRemote() {
